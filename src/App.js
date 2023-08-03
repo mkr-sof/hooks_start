@@ -1,13 +1,34 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import TodoList from './components/TodoList'
 
 export default function App () {
 
-    const [todos, setTodos] = useState([
-        {id: 1, title: 'First todo', completed: false},
-        {id: 2, title: 'Second todo', completed: true},
-    ])
-    const [todoTitle, setTodoTitle] = useState('')
+    const [todos, setTodos] = useState([]);
+    const [todoTitle, setTodoTitle] = useState('');
+
+
+    const handleClick = () => console.log('click');
+
+    useEffect(() => {
+        const raw = localStorage.getItem('todos') || '[]'
+        setTodos(JSON.parse(raw))
+    }, []);
+
+    // useEffect(() => {
+    //     console.log('Loading todos from localStorage');
+    //     const raw = localStorage.getItem('todos');
+    //     const parsedTodos = JSON.parse(raw);
+    //     console.log('Loaded todos:', parsedTodos);
+    //     // setTodos(parsedTodos);
+    //     return parsedTodos || ''
+    // }, []);
+
+    useEffect(() => {
+        console.log('Saving todos to localStorage');
+        document.addEventListener('click', handleClick)
+        localStorage.setItem('todos', JSON.stringify(todos))
+    }, [todos]);
+
 
     const addTodo = event => {
         if(event.key === 'Enter'){
@@ -20,6 +41,7 @@ export default function App () {
                 }
             ])
             setTodoTitle('')
+            console.log('New todos state:', todos);
         }
     }
 
@@ -38,7 +60,12 @@ export default function App () {
           </div>
 
           <TodoList todos={todos} />
+
+            {/*<button onClick={() => localStorage.setItem('todos', JSON.stringify(todos))}>*/}
+            {/*    Save to LocalStorage*/}
+            {/*</button>*/}
         </div>
     );
   }
+
 

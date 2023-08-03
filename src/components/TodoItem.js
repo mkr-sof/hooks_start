@@ -1,18 +1,14 @@
-import React, {useEffect, useState} from 'react'
+import React, { useState} from 'react'
 
 export default function TodoItem({title, id, completed}) {
   const [checked, setChecked] = useState(completed)
 
-  const cls = ['todo',]
+  const cls = ['todo']
 
   if (checked){
     cls.push('completed')
   }
 
-  useEffect(() => {
-    // This effect will run whenever the "completed" prop changes.
-    setChecked(completed);
-  }, [completed]);
 
   return (
     <li className={cls.join(' ')}>
